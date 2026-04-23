@@ -1,0 +1,6 @@
+sub_tipo_seguimiento,fecha,seg_codigo,seg_quien_trajo,ruta,seg_responsable,seg_id_muestra,seg_grasa,seg_st,seg_ic,seg_agua,seg_alcohol,seg_cloruros,seg_neutralizantes,seg_observaciones,guardado_en
+TERCEROS,20/04/2026,2227,,,,,3.26,12.01,-0.57,,,POSITIVO (+),,,20/04/2026 01:36
+ACOMPAÑAMIENTOS,20/04/2026,,PEPE,DARIEN,,123,3.26,12.6,-0.53,,,,,,20/04/2026 02:02
+ACOMPAÑAMIENTOS,20/04/2026,,PEPE,DARIEN,,456,3.23,12.9,-0.54,,,,,,20/04/2026 02:02
+CONTRAMUESTRAS SOLICITADAS,20/04/2026,,,,,123,3.26,12.7,-0.545,,,,,,20/04/2026 02:03
+CONTRAMUESTRAS SOLICITADAS,20/04/2026,,,,,456,2.9,12.01,-0.516,1.5,N/A,N/A,N/A,,20/04/2026 02:03
