@@ -524,10 +524,10 @@ def historial_to_excel_filtrado(
                 "VOL. DECLARADO (L)","VOL. SUMA MUESTRAS (L)","DIFERENCIA (L)",
                 "ST RUTA (%)","IC RUTA (°C)","ST PONDERADO (%)","IC PONDERADO (°C)",
                 "# MUESTRA","CÓDIGO","NOMBRE ESTACIÓN","VOLUMEN (L)",
-                "GRASA (%)","ST (%)","IC (°C)","AGUA (%)","POND ST","IC POND",
+                "GRASA (%)","ST (%)","PROTEÍNA (%)","IC (°C)","AGUA (%)","POND ST","IC POND",
                 "ALCOHOL","CLORUROS","NEUTRALIZANTES","OBSERVACIONES","GUARDADO EN",
             ]
-            widths5 = [12,18,18,18,16,18,14,12,14,14,14,10,14,20,10,10,10,10,10,10,10,10,10,14,30,18]
+            widths5 = [12,18,18,18,16,18,14,12,14,14,14,10,14,20,10,10,10,10,10,10,10,10,10,10,14,30,18]
             _wh(ws5, hdrs5, widths5)
             _am_ri = 2
             for _, _arow in df_acomp_xl.iterrows():
@@ -573,7 +573,7 @@ def historial_to_excel_filtrado(
                     _row5 = _common5 + [
                         _idx5, _cod5, _cat_xl_map.get(_cod5,""),
                         int(_vol5) if _vol5 is not None else None,
-                        _pnxl(_am5.get("_grasa")), _st5, _ic5,
+                        _pnxl(_am5.get("_grasa")), _st5, _pnxl(_am5.get("_proteina")), _ic5,
                         _pnxl(_am5.get("_agua")), _pst5, _pic5,
                         _am5.get("_alcohol",""), _am5.get("_cloruros",""),
                         _am5.get("_neutralizantes",""), _am5.get("_obs",""),
@@ -582,7 +582,7 @@ def historial_to_excel_filtrado(
                     _alt5 = (_am_ri % 2 == 0)
                     for _ci5, _v5 in enumerate(_row5, 1):
                         _hdr5 = hdrs5[_ci5-1]
-                        _fmt5 = "0.00"  if _hdr5 in ("ST RUTA (%)","ST PONDERADO (%)","GRASA (%)","ST (%)","AGUA (%)","POND ST") else \
+                        _fmt5 = "0.00"  if _hdr5 in ("ST RUTA (%)","ST PONDERADO (%)","GRASA (%)","ST (%)","PROTEÍNA (%)","AGUA (%)","POND ST") else \
                                 "0.000" if _hdr5 in ("IC RUTA (°C)","IC PONDERADO (°C)","IC (°C)","IC POND") else None
                         _wc(ws5, _am_ri, _ci5, _v5, fmt=_fmt5, alt=_alt5)
                     _am_ri += 1
@@ -1147,7 +1147,7 @@ if st.session_state.pagina_activa == "REGISTRAR":
             "ADJUNTAR IMÁGENES DE MUESTRAS DE LA RUTA",
             type=["png", "jpg", "jpeg"],
             accept_multiple_files=True,
-            key="imagenes_muestras",
+            key=f"imagenes_muestras_{_fg}",
             label_visibility="visible",
         )
 
@@ -1616,12 +1616,13 @@ if st.session_state.pagina_activa == "REGISTRAR":
             st.session_state.trans_imagenes_confirmadas = False
         if "trans_imagenes_nombres_guardados" not in st.session_state:
             st.session_state.trans_imagenes_nombres_guardados = []
+        _trans_fg = st.session_state.get("_trans_fg", 0)
 
         trans_imagenes_subidas = st.file_uploader(
             "ADJUNTAR IMÁGENES DE MUESTRAS TRANSUIZA",
             type=["png", "jpg", "jpeg"],
             accept_multiple_files=True,
-            key="trans_imagenes_muestras",
+            key=f"trans_imagenes_muestras_{_trans_fg}",
             label_visibility="visible",
         )
 
@@ -1709,7 +1710,7 @@ if st.session_state.pagina_activa == "REGISTRAR":
                 for _k in ["trans_placa", "trans_st_carrotanque", "trans_grasa",
                             "trans_st_muestra", "trans_proteina", "trans_fecha"]:
                     st.session_state.pop(_k, None)
-                st.session_state.pop("trans_imagenes_muestras", None)
+                st.session_state["_trans_fg"]                     = _trans_fg + 1
                 st.session_state.trans_imagenes_confirmadas       = False
                 st.session_state.trans_imagenes_nombres_guardados = []
                 st.session_state.trans_guardado_ok = True
@@ -1862,7 +1863,7 @@ if st.session_state.pagina_activa == "REGISTRAR":
                         key=f"seg_solidos_ruta_{_ti}",
                     )
                     seg_crios_raw = _aq2.text_input(
-                        "CRIOSCOPIA (°C)", placeholder="-0.",
+                        "CRIOSCOPIA (°C)", value="-0.", placeholder="-0.530",
                         key=f"seg_crios_raw_{_ti}",
                     )
                     try:
@@ -1929,7 +1930,7 @@ if st.session_state.pagina_activa == "REGISTRAR":
                             seg_volumen = None
                         activar_siguiente_con_enter()
 
-                    sq1, sq2, sq3 = st.columns(3)
+                    sq1, sq2, sq3, sq4 = st.columns(4)
                     seg_grasa = sq1.number_input(
                         "GRASA (%)", min_value=0.0, max_value=100.0,
                         step=0.01, format="%.2f", value=None,
@@ -1939,6 +1940,11 @@ if st.session_state.pagina_activa == "REGISTRAR":
                         "ST (%)", min_value=0.0, max_value=100.0,
                         step=0.01, format="%.2f", value=None,
                         placeholder="0.00", key=f"seg_st_{_ti}_{_qk}",
+                    )
+                    seg_proteina = sq4.number_input(
+                        "PROTEÍNA (%)", min_value=0.0, max_value=100.0,
+                        step=0.01, format="%.2f", value=None,
+                        placeholder="0.00", key=f"seg_proteina_{_ti}_{_qk}",
                     )
                     with sq3:
                         seg_ic_raw = st.text_input(
@@ -2017,6 +2023,7 @@ if st.session_state.pagina_activa == "REGISTRAR":
                             "OBS":       seg_observaciones or "",
                             "_volumen": seg_volumen,
                             "_grasa": seg_grasa, "_st": seg_st, "_ic": seg_ic,
+                            "_proteina": seg_proteina,
                             "_agua": seg_agua, "_alcohol": seg_alcohol,
                             "_cloruros": seg_cloruros, "_neutralizantes": seg_neutralizantes,
                             "_obs": seg_observaciones or "",
@@ -2091,6 +2098,7 @@ if st.session_state.pagina_activa == "REGISTRAR":
                             "NEUTRALIZANTES": seg_neutralizantes,
                             "OBS":       seg_observaciones or "",
                             "_grasa": seg_grasa, "_st": seg_st, "_ic": seg_ic,
+                            "_proteina": seg_proteina,
                             "_agua": seg_agua, "_alcohol": seg_alcohol,
                             "_cloruros": seg_cloruros, "_neutralizantes": seg_neutralizantes,
                             "_obs": seg_observaciones or "",
@@ -2122,16 +2130,18 @@ if st.session_state.pagina_activa == "REGISTRAR":
                 )
                 _s_imgs_conf_key   = f"seg_imgs_confirmadas_{_ti}"
                 _s_imgs_noms_key   = f"seg_imgs_nombres_{_ti}"
+                _s_img_gen_key     = f"_seg_img_gen_{_ti}"
                 if _s_imgs_conf_key not in st.session_state:
                     st.session_state[_s_imgs_conf_key] = False
                 if _s_imgs_noms_key not in st.session_state:
                     st.session_state[_s_imgs_noms_key] = []
+                _s_img_gen = st.session_state.get(_s_img_gen_key, 0)
 
                 _s_imgs_subidas = st.file_uploader(
                     "ADJUNTAR IMÁGENES",
                     type=["png", "jpg", "jpeg"],
                     accept_multiple_files=True,
-                    key=f"seg_imgs_uploader_{_ti}",
+                    key=f"seg_imgs_uploader_{_ti}_{_s_img_gen}",
                     label_visibility="visible",
                 )
                 if _s_imgs_subidas:
@@ -2268,9 +2278,12 @@ if st.session_state.pagina_activa == "REGISTRAR":
                     for _k in [f"seg_fecha_{_ti}", f"seg_codigo_{_ti}",
                                 f"seg_nombre_{_ti}",
                                 f"seg_quien_trajo_{_ti}", f"seg_ruta_acomp_{_ti}",
-                                f"seg_responsable_{_ti}"]:
+                                f"seg_responsable_{_ti}",
+                                f"seg_vol_declarado_{_ti}",
+                                f"seg_solidos_ruta_{_ti}",
+                                f"seg_crios_raw_{_ti}"]:
                         st.session_state.pop(_k, None)
-                    st.session_state.pop(f"seg_imgs_uploader_{_ti}", None)
+                    st.session_state[_s_img_gen_key]  = _s_img_gen + 1
                     st.session_state[_s_imgs_conf_key] = False
                     st.session_state[_s_imgs_noms_key] = []
                     st.session_state[f"seg_quality_key_counter_{_ti}"] = _qk + 1
@@ -2791,6 +2804,7 @@ elif st.session_state.pagina_activa == "HISTORIAL":
                                 "NOMBRE ESTACIÓN": _cat_ac_map.get(_cod_am, ""),
                                 "GRASA (%)":      _pnac(_am.get("_grasa")),
                                 "ST (%)":         _st_am,
+                                "PROTEÍNA (%)":   _pnac(_am.get("_proteina")),
                                 "IC (°C)":        _ic_am,
                                 "AGUA (%)":       _pnac(_am.get("_agua")),
                                 "VOLUMEN (L)":    int(_vol_am) if _vol_am is not None else None,
@@ -2821,6 +2835,7 @@ elif st.session_state.pagina_activa == "HISTORIAL":
                             return styles
                         _fmt_ac = {
                             "GRASA (%)": "{:.2f}", "ST (%)": "{:.2f}",
+                            "PROTEÍNA (%)": "{:.2f}",
                             "IC (°C)": "{:.3f}",   "AGUA (%)": "{:.2f}",
                             "POND ST": "{:.2f}",   "IC POND": "{:.3f}",
                         }
@@ -2833,6 +2848,7 @@ elif st.session_state.pagina_activa == "HISTORIAL":
                                 "NOMBRE ESTACIÓN":  st.column_config.TextColumn("NOMBRE ESTACIÓN", width="medium"),
                                 "GRASA (%)":        st.column_config.NumberColumn("GRASA (%)",      width="small", format="%.2f"),
                                 "ST (%)":           st.column_config.NumberColumn("ST (%)",         width="small", format="%.2f"),
+                                "PROTEÍNA (%)":     st.column_config.NumberColumn("PROTEÍNA (%)",   width="small", format="%.2f"),
                                 "IC (°C)":          st.column_config.NumberColumn("IC (°C)",        width="small", format="%.3f"),
                                 "AGUA (%)":         st.column_config.NumberColumn("AGUA (%)",       width="small", format="%.2f"),
                                 "VOLUMEN (L)":      st.column_config.NumberColumn("VOL. (L)",       width="small", format="%d"),
@@ -3035,8 +3051,8 @@ elif st.session_state.pagina_activa == "HISTORIAL":
                             unsafe_allow_html=True,
                         )
                         _ECOLS_E   = ["codigo", "grasa", "solidos", "proteina",
-                                       "crioscopia", "volumen", "alcohol",
-                                       "cloruros", "neutralizantes", "agua_pct", "obs"]
+                                       "crioscopia", "agua_pct", "volumen", "alcohol",
+                                       "cloruros", "neutralizantes", "obs"]
                         _est_json_e = str(_drow.get("estaciones_json", "") or "").strip()
                         try:
                             _est_data_e = json.loads(_est_json_e) if _est_json_e else []
@@ -3158,6 +3174,27 @@ elif st.session_state.pagina_activa == "HISTORIAL":
                             _est_records.append(_rec)
                         _edited_est_json = json.dumps(_est_records, ensure_ascii=False)
 
+                        # ── Precalcular ponderados desde las estaciones editadas ──
+                        _e_vols_p, _e_sum_st, _e_sum_ic = [], [], []
+                        for _er2 in _est_records:
+                            try:   _ev2 = float(_er2.get("volumen") or 0)
+                            except: _ev2 = 0.0
+                            try:   _es2 = float(str(_er2.get("solidos","") or "").replace(",","."))
+                            except: _es2 = None
+                            try:
+                                _ec2_raw = str(_er2.get("crioscopia","") or "").strip()
+                                _ec2 = float(_ec2_raw.replace(",",".")) if _ec2_raw else None
+                            except Exception: _ec2 = None
+                            if _ev2 > 0:
+                                _e_vols_p.append(_ev2)
+                                if _es2 is not None: _e_sum_st.append(_ev2 * _es2)
+                                if _ec2 is not None: _e_sum_ic.append(_ev2 * _ec2)
+                        _e_vol_total   = sum(_e_vols_p)
+                        _e_vol_ests    = int(_e_vol_total) if _e_vol_total else 0
+                        _e_diferencia  = int(_e_vol) - _e_vol_ests
+                        _e_st_pond     = round(sum(_e_sum_st) / _e_vol_total, 2)  if _e_vol_total and _e_sum_st else ""
+                        _e_ic_pond     = round(sum(_e_sum_ic) / _e_vol_total, 3)  if _e_vol_total and _e_sum_ic else ""
+
                         ec1, ec2, _ = st.columns([1.5, 1, 3])
                         with ec1:
                             if st.button("💾 GUARDAR CAMBIOS", type="primary",
@@ -3174,6 +3211,10 @@ elif st.session_state.pagina_activa == "HISTORIAL":
                                     "volumen_declarado": int(_e_vol),
                                     "solidos_ruta":      round(float(_e_st), 2),
                                     "crioscopia_ruta":   round(float(_e_ic), 3),
+                                    "vol_estaciones":    _e_vol_ests,
+                                    "diferencia":        _e_diferencia,
+                                    "st_pond":           _e_st_pond,
+                                    "ic_pond":           _e_ic_pond,
                                     "estaciones_json":   _edited_est_json,
                                     "num_estaciones":    _ests_cnt,
                                 })
