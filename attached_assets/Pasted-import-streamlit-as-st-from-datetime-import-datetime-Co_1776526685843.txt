@@ -1,0 +1,75 @@
+import streamlit as st
+from datetime import datetime
+
+# Configuración de la interfaz
+st.set_page_config(page_title="Control de Calidad Lácteo", layout="wide")
+
+st.title("🥛 Sistema de Gestión de Calidad Láctea")
+st.markdown("---")
+
+# Inicializamos el estado si no existe
+if 'continuar' not in st.session_state:
+    st.session_state.continuar = False
+
+# --- BLOQUE DE INGRESO INICIAL ---
+# Si ya se presionó continuar, podemos colapsar esta sección para ahorrar espacio
+with st.expander("CONFIGURACIÓN INICIAL", expanded=not st.session_state.continuar):
+    col1, col2 = st.columns(2)
+    with col1:
+        fecha_analisis = st.date_input("FECHA DE ANÁLISIS", datetime.now())
+    with col2:
+        opciones_seguimiento = ["RUTAS", "TRANSUIZA", "SEGUIMIENTOS"]
+        tipo_servicio = st.selectbox("TIPO DE SEGUIMIENTO", opciones_seguimiento)
+    
+    if st.button("CONTINUAR"):
+        st.session_state.continuar = True
+        st.rerun() # Recarga para aplicar el cambio de interfaz
+
+# --- INTERFAZ DINÁMICA ---
+if st.session_state.continuar:
+    
+    if tipo_servicio == "RUTAS":
+        st.header(f"📋 FORMULARIO: {tipo_servicio}")
+        
+        # 1. DATOS DE LA RUTA
+        with st.container():
+            st.subheader("Datos de Identificación")
+            c1, c2, c3, c4 = st.columns(4)
+            nombre_ruta = c1.text_input("NOMBRE DE LA RUTA").upper()
+            placa = c2.text_input("PLACA DE VEHÍCULO").upper()
+            conductor = c3.text_input("CONDUCTOR").upper()
+            volumen = c4.number_input("VOLUMEN (L)", min_value=0.0, step=0.1)
+
+        st.markdown("---")
+
+        # 2. DATOS DE CALIDAD DE RUTA
+        st.subheader("Análisis de Calidad de Ruta")
+        cq1, cq2 = st.columns(2)
+        
+        with cq1:
+            solidos_totales = st.number_input("SÓLIDOS TOTALES (%)", min_value=0.0, max_value=20.0, step=0.01)
+            # Validación de Sólidos
+            if 0 < solidos_totales < 12.60:
+                st.error("🚨 ALERTA: SÓLIDOS POR DEBAJO DE 12.60%")
+            elif solidos_totales >= 12.60:
+                st.success("✅ Sólidos dentro del parámetro")
+
+        with cq2:
+            # Crioscopía con valor por defecto -0.
+            crioscopia = st.number_input("CRIOSCOPIA (°C)", value=-0.500, format="%.3f", step=0.001)
+            # Validación de Crioscopía (Alerta si es mayor a -0.535, ej: -0.520 es agua)
+            if crioscopia > -0.535:
+                st.error("🚨 ALERTA: CRIOSCOPIA FUERA DE RANGO (MAYOR A -0.535)")
+            else:
+                st.success("✅ Crioscopia dentro del parámetro")
+
+    elif tipo_servicio == "TRANSUIZA":
+        st.info("Sección TRANSUIZA en desarrollo...")
+        
+    elif tipo_servicio == "SEGUIMIENTOS":
+        st.info("Sección SEGUIMIENTOS en desarrollo...")
+
+    # Botón para regresar si es necesario
+    if st.sidebar.button("REINICIAR FORMULARIO"):
+        st.session_state.continuar = False
+        st.rerun()

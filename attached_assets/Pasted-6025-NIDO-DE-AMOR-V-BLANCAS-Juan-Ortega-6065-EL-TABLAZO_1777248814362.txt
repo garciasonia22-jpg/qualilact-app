@@ -1,0 +1,92 @@
+6025	NIDO DE AMOR - V BLANCAS	Juan Ortega
+6065	EL TABLAZO	Estiven Rincón
+6010	KISKEYA DT	Estiven Rincón
+6071	DILUVIO	Holmes Gutierrez
+6043	LOS LAURELES	Holmes Gutierrez
+6100	PERSIA - VIILLANUEVA	Estiven Rincón
+6026	EL FONCE	Juan Ortega
+6063	SANMIGUEL	Juan Ortega
+6814	SAN CARLOS - SAN JUAN	Estiven Rincón
+6060	EL PERRO 2	Holmes Gutierrez
+6039	VILLA ZAMBRANO	Estiven Rincón
+6154	LA JUSTICIA - VENADOS	Holmes Gutierrez
+6820	LA SORPRESA SAN JUAN	Estiven Rincón
+6004	OÑATE - GAMEZ	Estiven Rincón
+6020	EL BLANDON	Holmes Gutierrez
+6077	GALAMBAO	Holmes Gutierrez
+6054	LOS CEIBOTES	Holmes Gutierrez
+6059	LOS OLIVOS	Holmes Gutierrez
+6057	VILLALBA	Holmes Gutierrez
+6003	EL RODEO	Holmes Gutierrez
+6030	EL OASIS - LOS CORAZONES	Holmes Gutierrez
+6070	JULEPE	Holmes Gutierrez
+6032	EST. EL DARIEN	Holmes Gutierrez
+6033	EST. LA CEIBA	Holmes Gutierrez
+6073	MATETULIA - AGUAS BLANCAS	Holmes Gutierrez
+6084	LOS MANGOS - AGUAS BLANCAS	Holmes Gutierrez
+6086	LAS DELICIAS	Holmes Gutierrez
+6031	EL DIAMANTE - ALTO DE LA VUELTA	Holmes Gutierrez
+6066	ALGARROBILLITO	Holmes Gutierrez
+6082	AMAZONITA PALIZADA	Juan Ortega
+6075	LA ESPERANZA	Juan Ortega
+6007	MONTES VERDE	Juan Ortega
+6021	EST. VILLA VIRGINIA	Juan Ortega
+6009	LOS PONDORES DT	Estiven Rincón
+6091	SAN ANTONIO - AGUAS BLANCAS	Holmes Gutierrez
+6079	DANUBIO - PALIZADA	Juan Ortega
+6309	LA MAGDALENA	Juan Ortega
+6014	LAS MARIAS LOS CORAZONES	Holmes Gutierrez
+6832	JAGUILANDIA - Del Pilar	Juan Ortega
+6074	CORRALEJAS	Estiven Rincón
+6008	LA JAGUA	Juan Ortega
+6042	LA MACUIRA	Holmes Gutierrez
+6316	EL DANUBIO	Juan Ortega
+6047	LAS VENTAS - CODAZZI	Juan Ortega
+6087	LAGUNILLA - PALIZADA	Juan Ortega
+6835	VILLA YOLEMA - RAICES	Holmes Gutierrez
+6819	LOS PONDORES	Estiven Rincón
+6103	LA CASTILLA - LOMA LINDA	Holmes Gutierrez
+6132	VILLA MARTA	Holmes Gutierrez
+6052	DANABRISE - CODAZZI	Juan Ortega
+6336	LA PAOLA	Juan Ortega
+6064	BRISAS MARINAS - AGUAS BLANCAS	Holmes Gutierrez
+6828	MAZATLÁN - SAN DIEGO	Juan Ortega
+6312	CIUDAD PERDIDA	Juan Ortega
+6101	EL PORVENIR	Holmes Gutierrez
+6036	VILLA PAULINA	Holmes Gutierrez
+6027	VILLA MARIA	Holmes Gutierrez
+6035	LA JORNADA	Holmes Gutierrez
+6833	LAS TANGAS - RIO SECO	Holmes Gutierrez
+6080	EL BRILLANTE - BADILLO	Estiven Rincón
+6109	TIERRA BAJA	Holmes Gutierrez
+6321	LA BODEGA	Juan Ortega
+6044	Manicomio	Juan Ortega
+6301	La Partida/Verdecia	Juan Ortega
+6094	PANORAMA - PALIZADA	Juan Ortega
+6131	EL ANDAMIO	Holmes Gutierrez
+6053	EL JOBO	Holmes Gutierrez
+6314	LAS MARIAS	Juan Ortega
+6313	EST. MADEIRA	Juan Ortega
+6315	BUENOS AIRES	Juan Ortega
+6218	LAS ANIMAS - CURUMANI	Juan Ortega
+6332	CANAIMA	Juan Ortega
+6808	Los Alpes - Cañaverales	Estiven Rincón
+6804	REPARITO EL TABLAZO	Estiven Rincón
+6068	BOCA DEL MONTE	Estiven Rincón
+6806	MAYALES - VILLANUEVA	Juan Ortega
+6816	VILLA TALLA	Estiven Rincón
+6809	RISARALDA	Juan Ortega
+6048	LA EUGENIA	Estiven Rincón
+6827	EL CANEY - FONSECA	Estiven Rincón
+6049	LOS JATICOS	Estiven Rincón
+6803	El Carreto - San Juan	Estiven Rincón
+6810	CONEJO - FONSECA	Estiven Rincón
+6812	BETHANIA CALABAZO	Estiven Rincón
+6811	VILLETA FONSECA	Estiven Rincón
+6815	LAS ILUSIONES	Juan Ortega
+6304	EST. LA HEREDIA	Juan Ortega
+6303	LA UNION	Juan Ortega
+6217	EST. SAN LUIS/CURUMA	Juan Ortega
+6328	MONSERRATE	Juan Ortega
+6325	LA SONORA	Juan Ortega
+6085	EL LUCERITO	Juan Ortega
