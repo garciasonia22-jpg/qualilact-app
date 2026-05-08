@@ -758,18 +758,17 @@ if not st.session_state.get("_logged_in", False):
             'Control de Calidad Láctea &nbsp;·&nbsp; TROMS - Milksourcing</p></div>',
             unsafe_allow_html=True,
         )
-        with st.form("_login_form"):
+       with st.form("_login_form"):
             _li_u = st.text_input("👤 Usuario", placeholder="Ingrese su usuario")
             _li_p = st.text_input("🔒 Contraseña", type="password", placeholder="Ingrese su contraseña")
             _li_submitted = st.form_submit_button(
                 "Iniciar Sesión", type="primary", use_container_width=True
             )
-if _li_submitted:
+
+        if _li_submitted:
             try:
-                # 1. Consulta a Supabase
                 respuesta = supabase.table("usuarios_app").select("*").eq("nombre_usuario", _li_u).eq("contrasena", _li_p).execute()
                 
-                # 2. Validación
                 if len(respuesta.data) > 0:
                     usuario_db = respuesta.data[0] 
                     st.session_state._logged_in      = True
@@ -781,11 +780,10 @@ if _li_submitted:
                     st.rerun()
                 else:
                     st.error("Usuario o contraseña incorrectos. Verifique sus credenciales.")
-                    
             except Exception as e:
-                st.error("Error de conexión con el servidor. Contacte al administrador.")
+                st.error(f"Error de conexión: {e}")
 
-    st.markdown(
+        st.markdown(
             '<div style="text-align:center;margin-top:18px;font-size:0.72rem;color:#9CA3AF;">'
             'Acceso restringido — solo personal autorizado Milksourcing</div>',
             unsafe_allow_html=True,
