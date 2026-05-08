@@ -5909,3 +5909,84 @@ elif st.session_state.pagina_activa == "DASHBOARD":
 
 
     save_draft_state()
+
+# --- PROTECCIÓN DE RUTA: Solo entra si el rol es administrador ---
+if st.session_state.get("_rol_usuario") == "ADMINISTRADOR":
+    st.markdown("---")
+    st.header("🛠️ Panel de Control de Usuarios")
+    
+    # Creamos pestañas para organizar las acciones
+    tab_ver, tab_crear, tab_editar = st.tabs(["📋 Lista de Usuarios", "➕ Crear Nuevo", "✏️ Modificar"])
+
+    # --- PESTAÑA 1: LISTA Y ELIMINACIÓN ---
+    with tab_ver:
+        try:
+            # Consultamos todos los usuarios actuales
+            res = supabase.table("usuarios_app").select("*").execute()
+            usuarios_actuales = res.data
+            
+            if usuarios_actuales:
+                # Mostramos una tabla con la información (sin mostrar la clave por seguridad)
+                df_usuarios = [{"ID": u["id"], "Usuario": u["nombre_usuario"], "Rol": u["rol"]} for u in usuarios_actuales]
+                st.table(df_usuarios)
+                
+                st.subheader("🗑️ Eliminar Usuario")
+                usuario_a_borrar = st.selectbox("Seleccione el usuario que desea eliminar", 
+                                               options=[u["nombre_usuario"] for u in usuarios_actuales],
+                                               key="del_user")
+                
+                if st.button("Confirmar Eliminación", type="secondary"):
+                    # Evitar que el administrador se borre a sí mismo por error
+                    if usuario_a_borrar == st.session_state._usuario_login:
+                        st.error("No puedes eliminar tu propio usuario mientras estás en sesión.")
+                    else:
+                        supabase.table("usuarios_app").delete().eq("nombre_usuario", usuario_a_borrar).execute()
+                        st.success(f"Usuario '{usuario_a_borrar}' eliminado.")
+                        st.rerun()
+            else:
+                st.info("No hay usuarios registrados.")
+        except Exception as e:
+            st.error(f"Error al cargar usuarios: {e}")
+
+    # --- PESTAÑA 2: CREACIÓN ---
+    with tab_crear:
+        with st.form("form_crear"):
+            nuevo_u = st.text_input("Nombre de Usuario", placeholder="Ej: op_planta_01")
+            nueva_p = st.text_input("Contraseña", type="password")
+            nuevo_r = st.selectbox("Asignar Rol", ["operador", "administrador", "analista"])
+            
+            if st.form_submit_button("Guardar Nuevo Usuario", type="primary"):
+                if nuevo_u and nueva_p:
+                    supabase.table("usuarios_app").insert({
+                        "nombre_usuario": nuevo_u, 
+                        "contrasena": nueva_p, 
+                        "rol": nuevo_r
+                    }).execute()
+                    st.success(f"Usuario '{nuevo_u}' creado con éxito.")
+                    st.rerun()
+                else:
+                    st.warning("Completa todos los campos.")
+
+    # --- PESTAÑA 3: MODIFICACIÓN ---
+    with tab_editar:
+        if usuarios_actuales:
+            u_editar = st.selectbox("Usuario a modificar", 
+                                   options=[u["nombre_usuario"] for u in usuarios_actuales],
+                                   key="edit_select")
+            
+            # Buscamos los datos actuales de ese usuario para precargar el formulario
+            datos_u = next(u for u in usuarios_actuales if u["nombre_usuario"] == u_editar)
+            
+            with st.form("form_editar"):
+                edit_p = st.text_input("Nueva Contraseña", value=datos_u["contrasena"], type="password")
+                edit_r = st.selectbox("Cambiar Rol", ["operador", "administrador", "analista"], 
+                                     index=["operador", "administrador", "analista"].index(datos_u["rol"]))
+                
+                if st.form_submit_button("Actualizar Datos"):
+                    supabase.table("usuarios_app").update({
+                        "contrasena": edit_p, 
+                        "rol": edit_r
+                    }).eq("nombre_usuario", u_editar).execute()
+                    st.success("Datos actualizados correctamente.")
+                    st.rerun()
+                    
