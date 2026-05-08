@@ -764,7 +764,7 @@ if not st.session_state.get("_logged_in", False):
             _li_submitted = st.form_submit_button(
                 "Iniciar Sesión", type="primary", use_container_width=True
             )
-     if _li_submitted:
+if _li_submitted:
             try:
                 # 1. Consulta directa a la tabla usuarios_app en Supabase
                 respuesta = supabase.table("usuarios_app").select("*").eq("nombre_usuario", _li_u).eq("contrasena", _li_p).execute()
