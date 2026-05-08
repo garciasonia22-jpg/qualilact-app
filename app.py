@@ -1149,21 +1149,6 @@ with st.sidebar:
     )
 
     st.markdown(
-        # --- BOTONES DE NAVEGACIÓN ---
-    if st.button("🏠 Inicio", use_container_width=True):
-        st.session_state._pagina_actual = "Inicio"
-    
-    if st.button("📍 Estaciones", use_container_width=True):
-        st.session_state._pagina_actual = "Estaciones"
-    
-    if st.button("🚚 Registro de Rutas", use_container_width=True):
-        st.session_state._pagina_actual = "Rutas"
-
-    # 🔐 SOLO PARA ADMINISTRADORES
-    if st.session_state.get("_rol_usuario") == "ADMINISTRADOR":
-        # Usamos un estilo de botón diferente (Primary) para que resalte
-        if st.button("🔐 Gestión de Usuarios", type="primary", use_container_width=True):
-            st.session_state._pagina_actual = "Administración"
         """
         <style>
         /* Sidebar nav buttons — full width, styled */
@@ -1198,6 +1183,21 @@ with st.sidebar:
         """,
         unsafe_allow_html=True,
     )
+      # --- BOTONES DE NAVEGACIÓN ---
+    if st.button("🏠 Inicio", use_container_width=True):
+        st.session_state._pagina_actual = "Inicio"
+    
+    if st.button("📍 Estaciones", use_container_width=True):
+        st.session_state._pagina_actual = "Estaciones"
+    
+    if st.button("🚚 Registro de Rutas", use_container_width=True):
+        st.session_state._pagina_actual = "Rutas"
+
+    # 🔐 SOLO PARA ADMINISTRADORES
+    if st.session_state.get("_rol_usuario") == "ADMINISTRADOR":
+        # Usamos un estilo de botón diferente (Primary) para que resalte
+        if st.button("🔐 Gestión de Usuarios", type="primary", use_container_width=True):
+            st.session_state._pagina_actual = "Administración"
 
     # ── Botón REGISTRAR ──────────────────────────────────────────────────────
     _reg_active = st.session_state.pagina_activa == "REGISTRAR"
