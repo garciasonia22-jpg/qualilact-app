@@ -758,7 +758,7 @@ if not st.session_state.get("_logged_in", False):
             'Control de Calidad Láctea &nbsp;·&nbsp; TROMS - Milksourcing</p></div>',
             unsafe_allow_html=True,
         )
-       with st.form("_login_form"):
+        with st.form("_login_form"):
             _li_u = st.text_input("👤 Usuario", placeholder="Ingrese su usuario")
             _li_p = st.text_input("🔒 Contraseña", type="password", placeholder="Ingrese su contraseña")
             _li_submitted = st.form_submit_button(
