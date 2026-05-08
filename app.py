@@ -1,3 +1,5 @@
+import streamlit as st
+from supabase import create_client, Client
 from datetime import datetime, date, timezone, timedelta
 import base64
 import csv
@@ -24,6 +26,14 @@ def now_col() -> datetime:
     """Hora actual en zona horaria Colombia."""
     return datetime.now(tz=COL_TZ)
 
+# --- CONFIGURACIÓN DE CONEXIÓN A SUPABASE ---
+@st.cache_resource
+def init_connection():
+    url = st.secrets["SUPABASE_URL"]
+    key = st.secrets["SUPABASE_KEY"]
+    return create_client(url, key)
+
+supabase = init_connection()
 # ── Persistencia CSV ─────────────────────────────────────────────────────────
 CSV_PATH  = "rutas_historial.csv"
 FOTOS_DIR = "fotos"
@@ -682,10 +692,7 @@ def historial_to_excel_filtrado(
 
 import random as _rnd
 
-_USERS = {
-    "admin_nestle":  {"password": "1234", "rol": "ADMINISTRADOR", "nombre": "Administrador de QualiLact"},
-    "op_valledupar": {"password": "1234", "rol": "OPERADOR",      "nombre": "Operador de QualiLact"},
-}
+
 
 _DATOS_LECHE = [
     "¿Sabías que la leche es uno de los alimentos más completos que existen?",
@@ -757,17 +764,28 @@ if not st.session_state.get("_logged_in", False):
             _li_submitted = st.form_submit_button(
                 "Iniciar Sesión", type="primary", use_container_width=True
             )
-        if _li_submitted:
-            if _li_u in _USERS and _USERS[_li_u]["password"] == _li_p:
-                st.session_state._logged_in     = True
-                st.session_state._rol_usuario   = _USERS[_li_u]["rol"]
-                st.session_state._nombre_usuario = _USERS[_li_u]["nombre"]
-                st.session_state._usuario_login  = _li_u
-                st.session_state._dato_leche     = _rnd.choice(_DATOS_LECHE)
-                st.session_state._just_logged_in = True
-                st.rerun()
-            else:
-                st.error("Usuario o contraseña incorrectos. Verifique sus credenciales.")
+     if _li_submitted:
+            try:
+                # 1. Consulta directa a la tabla usuarios_app en Supabase
+                respuesta = supabase.table("usuarios_app").select("*").eq("nombre_usuario", _li_u).eq("contrasena", _li_p).execute()
+                
+                # 2. Si la base de datos devuelve un registro, las credenciales son correctas
+                if len(respuesta.data) > 0:
+                    usuario_db = respuesta.data[0] # Extraemos los datos de ese usuario
+                    
+                    # 3. Guardamos los datos oficiales en la sesión
+                    st.session_state._logged_in      = True
+                    st.session_state._rol_usuario    = usuario_db["rol"]
+                    st.session_state._nombre_usuario = usuario_db["nombre_usuario"] 
+                    st.session_state._usuario_login  = _li_u
+                    st.session_state._dato_leche     = _rnd.choice(_DATOS_LECHE)
+                    st.session_state._just_logged_in = True
+                    st.rerun()
+                else:
+                    st.error("Usuario o contraseña incorrectos. Verifique sus credenciales.")
+                    
+            except Exception as e:
+                st.error("Error de conexión con el servidor. Contacte al administrador.")
         st.markdown(
             '<div style="text-align:center;margin-top:18px;font-size:0.72rem;color:#9CA3AF;">'
             'Acceso restringido — solo personal autorizado Milksourcing</div>',
