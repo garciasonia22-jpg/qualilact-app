@@ -785,7 +785,7 @@ if _li_submitted:
             except Exception as e:
                 st.error("Error de conexión con el servidor. Contacte al administrador.")
 
-        st.markdown(
+    st.markdown(
             '<div style="text-align:center;margin-top:18px;font-size:0.72rem;color:#9CA3AF;">'
             'Acceso restringido — solo personal autorizado Milksourcing</div>',
             unsafe_allow_html=True,
