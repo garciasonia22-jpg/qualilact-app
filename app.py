@@ -1344,7 +1344,7 @@ if st.session_state._sidebar_close:
     )
 
 # --- PROTECCIÓN DE RUTA: Solo entra si el rol es administrador ---
-if st.session_state.get("_rol_usuario") == "administrador":
+if st.session_state.get("_rol_usuario") == "ADMINISTRADOR":
     st.markdown("---")
     st.header("🛠️ Panel de Control de Usuarios")
     
