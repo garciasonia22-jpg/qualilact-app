@@ -766,14 +766,12 @@ if not st.session_state.get("_logged_in", False):
             )
 if _li_submitted:
             try:
-                # 1. Consulta directa a la tabla usuarios_app en Supabase
+                # 1. Consulta a Supabase
                 respuesta = supabase.table("usuarios_app").select("*").eq("nombre_usuario", _li_u).eq("contrasena", _li_p).execute()
                 
-                # 2. Si la base de datos devuelve un registro, las credenciales son correctas
+                # 2. Validación
                 if len(respuesta.data) > 0:
-                    usuario_db = respuesta.data[0] # Extraemos los datos de ese usuario
-                    
-                    # 3. Guardamos los datos oficiales en la sesión
+                    usuario_db = respuesta.data[0] 
                     st.session_state._logged_in      = True
                     st.session_state._rol_usuario    = usuario_db["rol"]
                     st.session_state._nombre_usuario = usuario_db["nombre_usuario"] 
@@ -786,6 +784,7 @@ if _li_submitted:
                     
             except Exception as e:
                 st.error("Error de conexión con el servidor. Contacte al administrador.")
+
         st.markdown(
             '<div style="text-align:center;margin-top:18px;font-size:0.72rem;color:#9CA3AF;">'
             'Acceso restringido — solo personal autorizado Milksourcing</div>',
