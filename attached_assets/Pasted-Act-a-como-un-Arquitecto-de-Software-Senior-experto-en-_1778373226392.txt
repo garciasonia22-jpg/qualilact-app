@@ -1,0 +1,38 @@
+Actúa como un Arquitecto de Software Senior experto en Python y Streamlit.
+
+Contexto:
+Tengo una aplicación en Streamlit alojada en GitHub cuyo archivo principal (app.py) ha crecido hasta las 6000 líneas. Esta aplicación maneja dashboards y control de datos (como filtros por fecha, ruta y placa del vehículo, y cálculos técnicos como sólidos totales y crioscopía). El objetivo inmediato es preparar la arquitectura del código para integrar una base de datos en Supabase, pero antes necesito modularizar el código actual.
+
+Objetivo:
+Refactorizar y modularizar el archivo app.py separándolo en múltiples archivos y carpetas lógicas.
+
+⚠️ REGLAS ESTRICTAS Y RESTRICCIONES (CRÍTICO):
+
+Cero cambios funcionales: La lógica de negocio, las fórmulas matemáticas, el procesamiento de datos y las interacciones del usuario deben funcionar EXACTAMENTE igual que ahora.
+
+Cero cambios en la interfaz (UI): No alteres el diseño, la disposición de las columnas, los colores, ni el tema de la aplicación (debe mantenerse la configuración de diseño limpio y modo claro). No agregues ni elimines componentes de Streamlit (st.write, st.dataframe, etc.).
+
+Cero dependencias nuevas: No instales ni importes librerías que no estén ya en uso en el código actual, a excepción de las estándar de Python necesarias para la importación de módulos.
+
+Plan de Acción Requerido:
+Por favor, analiza el código actual y reorganízalo siguiendo esta estructura de directorios:
+
+app.py: Quedará únicamente como el punto de entrada principal (entry point). Solo debe contener la configuración de la página (st.set_page_config), la importación de los módulos y el enrutamiento o renderizado principal de la UI.
+
+/components/: Extrae aquí todas las funciones que renderizan partes de la interfaz (ej. barras laterales, tarjetas de métricas, contenedores de gráficos y dashboards).
+
+/utils/: Mueve aquí todas las funciones auxiliares que no renderizan UI (ej. cálculos de calidad, lógica de filtrado de dataframes por placa/ruta, formateo de fechas, limpieza de datos).
+
+/db/: Crea esta carpeta y dentro un archivo supabase_client.py vacío o con una estructura básica comentada, dejándolo listo para la futura conexión (no implementes la conexión aún, solo deja el espacio preparado).
+
+/config/: (Opcional) Si hay variables globales de configuración o diccionarios estáticos grandes, muévelos aquí.
+
+Instrucciones de ejecución:
+
+Lee todo el archivo app.py para entender las dependencias y el flujo.
+
+Procede a crear los archivos y extraer las funciones paso a paso.
+
+Asegúrate de que las importaciones cruzadas (imports) entre las nuevas carpetas y app.py sean correctas para que la aplicación corra sin el error ModuleNotFoundError.
+
+Al finalizar, confirma que la aplicación arranca sin errores.

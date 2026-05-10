@@ -1,0 +1,53 @@
+En nuestra aplicación modularizada, tenemos un módulo de visualización de datos (ubicado en components/historial.py o similar). Actualmente, el sistema cuenta con un Control de Acceso Basado en Roles (RBAC) guardado en st.session_state._rol_usuario. Necesitamos optimizar la carga del historial y estandarizar la forma en que se muestran, editan y eliminan los detalles de los registros.
+
+Objetivos:
+
+
+
+Optimizar la carga de datos (Empty State inicial).
+
+Estandarizar la vista de detalles.
+
+Implementar acciones CRUD (Editar/Eliminar) estrictamente protegidas por rol.
+
+⚠️ REGLAS ESTRICTAS (CRÍTICO):
+
+
+
+Cero cambios en el diseño visual general: Mantén la estética industrial en modo claro (Light Mode).
+
+Seguridad de Roles (CRÍTICO): Las opciones de "Editar" y "Eliminar" SOLO deben renderizarse en la interfaz si st.session_state._rol_usuario == 'Administrador'. Si el usuario es 'Operario', solo debe ver los detalles en modo lectura.
+
+Usa la conexión a Supabase existente en db/supabase_client.py para todas las transacciones.
+
+Plan de Acción Requerido:
+
+Paso 1: Estado Inicial Vacío en Historial
+
+
+
+Modifica la vista principal del historial para que NO ejecute ninguna consulta a Supabase ni muestre tablas al cargar la página.
+
+Implementa una validación lógica: la tabla de resultados solo debe aparecer SI el usuario ha ingresado un valor en al menos uno de los filtros principales (Fecha, Ruta o Placa del vehículo).Y DADO EN EL BOTON DE BUSCAR
+
+Si no hay filtros activos, muestra un mensaje amigable con st.info() pidiendo al usuario que aplique filtros para buscar registros.
+
+Paso 2: Estandarización de Detalles
+
+
+
+Asegúrate de que, al expandir o seleccionar un registro de la tabla filtrada (usando st.expander o seleccionando una fila), la lógica para mostrar los detalles de la ruta y sus estaciones asociadas sea consistente y limpia.
+
+Paso 3: Botones de Edición y Eliminación Protegidos
+
+
+
+Dentro de la vista de detalle de cada registro, agrega un botón para "Editar" y otro para "Eliminar" (puedes usar st.button o st.form según convenga).
+
+Envuelve estos botones obligatoriamente en una validación del rol ('Administrador').
+
+Eliminar: Debe ejecutar una sentencia DELETE en la tabla correspondiente de Supabase usando el ID del registro.
+
+Editar: Debe desplegar campos de entrada pre-llenados con los datos actuales para permitir la modificación, y un botón de "Guardar Cambios" que ejecute un UPDATE en Supabase.
+
+Ejecuta estos cambios con cuidado, verificando que la lógica de filtros y las consultas SQL a Supabase sean correctas.

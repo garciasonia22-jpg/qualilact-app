@@ -1,0 +1,32 @@
+Nuestra aplicación en Streamlit está modularizada y es utilizada para el ingreso rápido de datos en un entorno industrial. Necesitamos optimizar la ergonomía de entrada de datos (Data Entry UX).
+
+⚠️ REGLA PRIMORDIAL: INSPECCIONAR ANTES DE MODIFICAR (CRÍTICO):
+Antes de escribir, eliminar o cambiar cualquier línea de código, debes VERIFICAR la lógica actual del archivo. Si la funcionalidad descrita a continuación ya existe y opera correctamente sin errores, NO LA MODIFIQUES. Solo debes aplicar cambios o inyectar código si detectas que el comportamiento actual es erróneo, produce saltos indeseados o si la funcionalidad está ausente. El objetivo es evitar daños colaterales en código estable.
+
+Plan de Acción (Auditoría y Corrección Selectiva):
+
+Paso 1: Auditoría de Navegación por Teclado (Límites de Sección)
+
+Inspección: Revisa cómo se manejan los inputs y si existe algún script actual gestionando el teclado. Analiza si presionar Enter causa que el foco salte accidentalmente a otras secciones (ej. del formulario de rutas al sidebar).
+
+Corrección (Solo si falla o no existe): Implementa un script JS (vía st.components.v1.html) donde ArrowRight o Enter pasen a la siguiente casilla, y ArrowLeft a la anterior (solo si el cursor está al inicio/fin del texto). Estricto: Limita el alcance del script al contenedor activo. Si se presiona Enter en la última casilla, NO DEBE saltar a otra sección; debe accionar (trigger click) únicamente el botón de Guardar/Agregar de ese mismo formulario.
+
+Paso 2: Auditoría de Mayúsculas Automáticas
+
+Inspección: Busca callbacks on_change en los st.text_input que apliquen .upper(). Revisa si esto está causando que el cursor de texto salte al principio de la palabra mientras el usuario escribe.
+
+Corrección (Solo si causa errores de cursor): Elimina el reemplazo en tiempo real. Aplica el .upper() solo en el backend al momento de guardar los datos, o usa CSS (text-transform: uppercase;) para la interfaz sin afectar el tipeo en vivo.
+
+Paso 3: Auditoría de Caché Anti-Desconexión
+
+Inspección: Verifica si los campos de entrada críticos carecen del parámetro key vinculado a st.session_state.
+
+Corrección (Solo si falta): Añade las key correspondientes para que los datos tipeados no se borren si hay una recarga o micro-corte de red.
+
+Paso 4: Auditoría de UX en Crioscopía
+
+Inspección: Revisa las casillas de "Crioscopía". Analiza si el usuario actualmente tiene que digitar el -0. manualmente.
+
+Corrección (Solo si se requiere tipeo manual del prefijo): Modifica la interfaz visual para que muestre el -0. como una etiqueta estática y el input solo reciba los decimales (ej. 530). En la lógica de guardado, formatea el dato para que a la base de datos (Supabase) llegue como el número completo -0.530.
+
+Ejecuta esta inspección paso a paso y repórtame qué archivos necesitaban corrección y cuáles dejaste intactos. Mantén intacto el RBAC y el diseño Light Mode.
