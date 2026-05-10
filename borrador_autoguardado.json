@@ -1,0 +1,16 @@
+{
+  "continuar": false,
+  "_tipo_servicio_guardado": "SEGUIMIENTOS",
+  "_sub_tipo_seg_guardado": "ESTACIONES",
+  "tipo_servicio_select": "ESTACIONES",
+  "sub_tipo_seg_select": "ESTACIONES",
+  "_ruta_fg": 0,
+  "imagenes_confirmadas": false,
+  "imagenes_nombres_guardados": [],
+  "trans_imagenes_confirmadas": false,
+  "trans_imagenes_nombres_guardados": [],
+  "estaciones_guardadas": [],
+  "form_ver": 0,
+  "acomp_muestras": [],
+  "contra_muestras": []
+}
