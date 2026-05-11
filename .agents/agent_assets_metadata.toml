@@ -1,0 +1,8 @@
+uploads = []
+generated = []
+
+[[outputs]]
+id = "pF_AGPNo792ywwHW81Rmb"
+uri = "file://exports/qualilact.zip"
+type = "unspecified"
+title = "QualiLact — Proyecto completo (ZIP)"
