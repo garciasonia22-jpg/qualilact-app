@@ -7,6 +7,7 @@ import streamlit as st
 
 from utils.draft_utils import restore_draft_state, save_draft_state
 from utils.input_utils import activar_siguiente_con_enter
+from utils.persistent_session import restore_or_sync_session
 from utils.time_utils import now_col
 from components.auth import render_login as render_auth
 from components.header import render_header
@@ -34,6 +35,9 @@ with open("logo_qualilact_brown.png", "rb") as _ql_file:
 
 with open("logo_qualilact_cropped.png", "rb") as _ql_crop_file:
     _ql_logo_crop_b64 = base64.b64encode(_ql_crop_file.read()).decode("utf-8")
+
+# ── Sesión persistente (sobrevive caídas de internet, se borra al cerrar pestaña) ──
+restore_or_sync_session()
 
 # ── Auth guard ───────────────────────────────────────────────────────────────
 if not st.session_state.get("_logged_in", False):
