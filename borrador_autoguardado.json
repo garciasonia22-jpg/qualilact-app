@@ -13,24 +13,24 @@
   "form_ver": 0,
   "acomp_muestras": [],
   "contra_muestras": [],
-  "nue_obs_0": "",
-  "nue_codigo_0": "",
-  "nue_crio_0": "-0.",
-  "nue_proteina_0": null,
   "conductor_0": "",
   "crioscopia_0": "-0.",
-  "nue_alcohol_0": "N/A",
-  "fecha_ruta_0": {
-    "__draft_type": "date",
-    "value": "2026-05-10"
-  },
   "nue_cloruros_0": "N/A",
   "nue_vol_0": null,
   "nue_grasa_0": null,
-  "nue_neutral_0": "N/A",
   "nombre_ruta_0": "",
   "nue_solidos_0": null,
   "volumen_ruta_0": null,
   "solidos_totales_0": "",
-  "placa_vehiculo_0": ""
+  "placa_vehiculo_0": "",
+  "nue_obs_0": "",
+  "nue_codigo_0": "",
+  "nue_crio_0": "-0.",
+  "nue_proteina_0": null,
+  "fecha_ruta_0": {
+    "__draft_type": "date",
+    "value": "2026-05-10"
+  },
+  "nue_alcohol_0": "N/A",
+  "nue_neutral_0": "N/A"
 }
