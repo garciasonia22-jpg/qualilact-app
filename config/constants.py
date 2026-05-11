@@ -1,12 +1,9 @@
-import os
 from datetime import timezone, timedelta
 
 COL_TZ = timezone(timedelta(hours=-5))
 
-CSV_PATH  = "rutas_historial.csv"
-FOTOS_DIR = "fotos"
-os.makedirs(FOTOS_DIR, exist_ok=True)
-
+# Columnas usadas por components/historial.py para construir vistas tabulares.
+# La persistencia real de los datos vive en Supabase (db/supabase_repo.py).
 CSV_COLS = [
     "tipo_seguimiento",
     "fecha", "ruta", "placa", "conductor",
@@ -17,19 +14,8 @@ CSV_COLS = [
     "estaciones_json", "fotos_json",
 ]
 
-SEG_CSV_PATH = "seguimientos_historial.csv"
-SEG_COLS = [
-    "sub_tipo_seguimiento", "fecha",
-    "seg_codigo", "seg_quien_trajo", "ruta", "seg_responsable",
-    "seg_id_muestra", "seg_volumen", "seg_grasa", "seg_st", "seg_ic", "seg_agua",
-    "seg_alcohol", "seg_cloruros", "seg_neutralizantes", "seg_observaciones",
-    "seg_vol_declarado", "seg_vol_muestras", "seg_diferencia_vol",
-    "seg_solidos_ruta", "seg_crioscopia_ruta", "seg_st_pond", "seg_ic_pond",
-    "muestras_json", "guardado_en", "fotos_json",
-]
-
-DRAFT_PATH      = "borrador_autoguardado.json"
-CATALOGO_PATH   = "estaciones_catalogo.csv"
+# Borrador local del formulario de captura (autoguardado entre reruns).
+DRAFT_PATH = "borrador_autoguardado.json"
 
 DRAFT_EXACT_KEYS = [
     "continuar", "_tipo_servicio_guardado", "_sub_tipo_seg_guardado",
