@@ -42,18 +42,27 @@ def render_dashboard():
 
     _df_raw     = load_historial()
     _df_seg_raw = load_seguimientos()
-    _df_rutas   = _df_raw[_df_raw["tipo_seguimiento"] == "RUTAS"].copy()
-    _df_trans   = _df_raw[_df_raw["tipo_seguimiento"] == "TRANSUIZA"].copy()
+
+    if not _df_raw.empty and "tipo_seguimiento" in _df_raw.columns:
+        _df_rutas = _df_raw[_df_raw["tipo_seguimiento"] == "RUTAS"].copy()
+        _df_trans = _df_raw[_df_raw["tipo_seguimiento"] == "TRANSUIZA"].copy()
+    else:
+        _df_rutas = pd.DataFrame()
+        _df_trans = pd.DataFrame()
 
     for _df in [_df_rutas, _df_trans]:
+        if _df.empty or "fecha" not in _df.columns:
+            continue
         _df["_fecha_dt"] = pd.to_datetime(_df["fecha"], format="%d/%m/%Y", errors="coerce")
         for _c in ["solidos_ruta", "crioscopia_ruta", "st_carrotanque",
                    "diferencia_solidos", "volumen_declarado"]:
             if _c in _df.columns:
                 _df[_c] = pd.to_numeric(_df[_c], errors="coerce")
 
-    _df_rutas = _df_rutas.dropna(subset=["_fecha_dt"])
-    _df_trans = _df_trans.dropna(subset=["_fecha_dt"])
+    if not _df_rutas.empty and "_fecha_dt" in _df_rutas.columns:
+        _df_rutas = _df_rutas.dropna(subset=["_fecha_dt"])
+    if not _df_trans.empty and "_fecha_dt" in _df_trans.columns:
+        _df_trans = _df_trans.dropna(subset=["_fecha_dt"])
 
     _estac_rows = []
     for _, _rrow in _df_rutas.iterrows():

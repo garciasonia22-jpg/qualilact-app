@@ -2,6 +2,7 @@ import streamlit as st
 
 from utils.time_utils import now_col
 from utils.draft_utils import clear_draft_state
+from utils.persistent_session import request_logout
 
 
 def render_sidebar(ql_logo_b64: str):
@@ -182,8 +183,7 @@ def render_sidebar(ql_logo_b64: str):
             unsafe_allow_html=True,
         )
         if st.button("🚪 Cerrar Sesión", key="_btn_logout", width='stretch', type="secondary"):
-            for _k in list(st.session_state.keys()):
-                del st.session_state[_k]
+            request_logout()
             st.rerun()
 
         if st.button("REINICIAR FORMULARIO", key="_btn_reiniciar", width='stretch'):

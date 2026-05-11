@@ -7,6 +7,7 @@ from config.constants import _DATOS_LECHE
 from db.supabase_client import init_connection
 from utils.auth_utils import es_hash_bcrypt, hashear_contrasena, verificar_contrasena
 from utils.input_utils import activar_siguiente_con_enter
+from utils.persistent_session import issue_token
 
 
 def render_login(ql_logo_crop_b64: str, nestle_logo_b64: str):
@@ -82,6 +83,11 @@ def render_login(ql_logo_crop_b64: str, nestle_logo_b64: str):
                     st.session_state._usuario_login  = _li_u
                     st.session_state._dato_leche     = _rnd.choice(_DATOS_LECHE)
                     st.session_state._just_logged_in = True
+                    issue_token(
+                        usuario=_li_u,
+                        rol=usuario_db["rol"],
+                        nombre=usuario_db["nombre_usuario"],
+                    )
                     st.rerun()
                 else:
                     st.error("Usuario o contraseña incorrectos. Verifique sus credenciales.")
