@@ -98,6 +98,4 @@ _DATOS_LECHE = [
     "La proteína mínima exigida por norma colombiana es 2,9 % m/m en leche cruda.",
     "Resolución 1382 de 2013 del MinSalud: límites máximos de aflatoxina M1 en leche y derivados (0,5 µg/kg).",
     "Norma NTC 399: requisitos fisicoquímicos de la leche cruda en Colombia (referencia ICONTEC).",
-    "Norma NTC 4978: método de referencia para determinación de punto crioscópico en leche.",
-    "Norma NTC 750: requisitos para leche pasteurizada destinada al consumo humano.",
 ]
